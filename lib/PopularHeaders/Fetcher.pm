@@ -11,9 +11,13 @@ use Mojo::UserAgent;
 
 sub new {
     my ($class) = @_;
-    my $params = {
-        ua => Mojo::UserAgent->new
-    };
+    my $ua = Mojo::UserAgent->new;
+    $ua->connect_timeout(3);
+    $ua->inactivity_timeout(10);
+    $ua->request_timeout(3);
+    $ua->max_redirects(3);
+
+    my $params = { ua => $ua };
     return bless $params, $class;
 }
 
