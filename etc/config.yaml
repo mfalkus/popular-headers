@@ -1,0 +1,4 @@
+db_user: ph_user
+db_pass: your-secure-password
+db_host: 127.0.0.1
+db_name: popular_headers
