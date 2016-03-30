@@ -27,10 +27,9 @@ DROP TABLE IF EXISTS `headers`;
 CREATE TABLE `headers` (
   `header_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
-  `value` varchar(128) NOT NULL,
+  `value` varchar(767) NOT NULL,
   `first_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `last_seen` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `job_offer` tinyint(1) NOT NULL,
   PRIMARY KEY (`header_id`),
   UNIQUE KEY `name` (`name`,`value`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1604006 DEFAULT CHARSET=latin1;
