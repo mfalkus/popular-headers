@@ -66,10 +66,13 @@ sub new {
 }
 
 sub add_header {
-    my ($self, $site, $code, $headers, $source, $rank) = @_;
+    my ($self, $target, $code, $headers) = @_;
 
-    $source ||= 'Unknown';
-    $rank ||= '';
+    my $site = $target->{'site'};
+    my $source = (defined $target->{'source'})
+        ? $target->{'source'} : 'Unknown';
+    my $rank = (defined $target->{'rank'})
+        ? $target->{'rank'} : '';
      
     $self->{'insert_site_sth'}->execute(
         $site, $source, $rank
@@ -106,3 +109,57 @@ sub add_header {
 }
 
 1;
+
+=head1 NAME
+
+PopularHeaders::CommonDB - DB storage for popular headers
+
+=head1 SYNOPSIS
+
+    use PopularHeaders::CommonDB;
+    my $db = PopularHeaders::CommonDB->new({
+        'user' => 'your db username',
+        'pass' => 'your db password',
+        'host' => 'hostname for db',
+        'name' => $config->{'db_name'},
+    });
+
+    $db->add_header(
+        {site, source, rank}
+        $code,
+        $header_hash
+    );
+
+=head1 DESCRIPTION
+
+This module simplifies the process of adding a set of HTTP headers to the
+database from the popular-headers repo. The object creates a database
+handle on creation then executes the relevant queries when a new set of
+headers for a site are fetched.
+
+=head2 Methods
+
+=over
+
+=item C<new>
+
+Returns a new PopularHeaders::CommonDB object
+
+=item C<add_header>
+
+Takes a hash containing the site (e.g. google.com), source (e.g. alexa)
+and rank (e.g. 1), a string containing the status code (e.g. 200) and
+a hash of the HTTP headers. These will then be added to the relevant
+database tables.
+
+C<add_header> returns a hash that always has an 'added' key set to 1
+for success or 0 for failure. If set to 0 an 'error' key will also be
+set with an error string.
+
+=back
+
+=head1 AUTHOR
+
+Martin Falkus <http://falkus.co/>
+
+=cut
