@@ -8,6 +8,8 @@ use strict;
 use warnings;
 
 use Mojo::UserAgent;
+use Mojo::IOLoop;
+use Data::Dumper;
 
 sub new {
     my ($class) = @_;
@@ -22,25 +24,22 @@ sub new {
 }
 
 sub get_url_header {
-    my ($self, $site) = @_;
+    my ($self, $target, $delay, $db_cb) = @_;
 
     # Setup for the HEAD request
-    my $tx = $self->{ua}->build_tx(HEAD => $site);
+    my $tx = $self->{ua}->build_tx(HEAD => $target->{'site'});
     $tx->req->headers->remove('accept-encoding');
     $tx->req->headers->accept('*/*');
     $tx->req->headers->user_agent('Mozilla/4.0');
 
-    $tx = $self->{ua}->start($tx);
-
-    # Store result code
-    my $headers = {};
-    my $code = -1;
-    eval {
-        $headers = $tx->res->content->headers->to_hash;
-        $code = $tx->res->code;
-    };
-
-    return ($code, $headers);
+    my $cb = $delay->begin(0);
+    $self->{ua}->start($tx => sub {
+        my ($ua, $tx) = @_;
+        my $headers = $tx->res->content->headers->to_hash;
+        my $code = $tx->res->code;
+        $db_cb->($target, $code, $headers) if ($db_cb);
+        $cb->();
+    });
 }
 
 1;
