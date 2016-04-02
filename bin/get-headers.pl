@@ -19,7 +19,7 @@ use PopularHeaders::Util qw(verbose);
 my $fetcher = PopularHeaders::Fetcher->new();
 my $delay = Mojo::IOLoop->delay;
 my $alexa;
-my $batch = 50;
+my $batch = 200;
 my $url;
 GetOptions (
     "a|alexa"   => \$alexa,
@@ -65,13 +65,18 @@ while(<>) {
 
     $i++;
     $k++;
+    my $start_time = time();
     $fetcher->get_url_header(
         $target, $delay, \&store_results
     );
 
     if ($i == $batch) {
-        print "$k Sites Processed. Waiting for next batch...\n";
+        my $processed = ($k - $i);
+        print "$processed Sites Processed. $i Queued. Waiting...\n";
         $delay->wait;
+        my $time_el = time() - $start_time;
+        my $per_url = ($time_el / $i);
+        printf("\t%.0fs at %.2fs per URL\n", $time_el, $per_url);
         $i = 0;
     }
 }
