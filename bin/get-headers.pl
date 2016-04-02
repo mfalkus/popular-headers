@@ -32,7 +32,7 @@ GetOptions (
 # to make a DB object etc
 if ($url) {
     verbose("Fetching one-off site: $url");
-    my ($code, $headers) = $fetcher->get_url_header({
+    $fetcher->get_url_header({
         'site' => $url
     }, $delay, \&show_results);
     $delay->wait;
