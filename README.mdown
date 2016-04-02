@@ -1,0 +1,35 @@
+This project aims to take in a list of website and see what HTTP headers those
+sites are returning, looking for what's popular.  Based on a project from
+Summer 2015, this repo represents the more interesting (and usable!) parts.
+
+# Running
+
+* Setup the database and user:
+
+    mysql> CREATE DATABASE popular_headers;
+    mysql> CREATE USER 'ph_user'@'127.0.0.1' IDENTIFIED BY 'your-secure-password';
+    mysql> GRANT ALL PRIVILEGES ON popular_headers.* TO 'ph_user'@'127.0.0.1';
+
+* Load the schema, `mysql -u ph_user -p popular_headers < sql/schema.sql`
+* Update the configuration file, `etc/config.yaml`, with your database credentials
+* Pipe a list of sites in to `bin/gather-headers`.
+
+    wget http://s3.amazonaws.com/alexa-static/top-1m.csv.zip
+    unzip top-1m.csv.zip
+    cat top-1m.csv | head -n 10000 | bin/gather-headers
+
+* Query the DB for results.
+
+# Requirements
+
+Running from Ubuntu, the only extras you'll need are a few additional perl libraries:
+
+    sudo apt-get install \
+        libmojolicious-perl # for Mojo::UserAgent
+        libconfig-yaml-perl # for YAML
+        libreadonly-perl    # for Readonly
+
+# Notes
+
+Each script and perl module has perldoc documentation that should be up-to-date
+and contain more information than this README.
