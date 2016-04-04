@@ -32,12 +32,8 @@ sub get_url_header {
     $tx->req->headers->accept('*/*');
     $tx->req->headers->user_agent('Mozilla/4.0');
 
-    if (defined $target->{'attempts'}) {
-        $target->{'attempts'} = 1;
-    } else {
-        $target->{'attempts'}++;
-    }
-
+    # Record this as an attempt to fetch the URL
+    $target->{'attempts'}++;
     my $cb = $delay->begin(0);
     $self->{ua}->start($tx => sub {
         my ($ua, $tx) = @_;
