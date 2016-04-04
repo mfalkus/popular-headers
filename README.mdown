@@ -33,3 +33,7 @@ Running from Ubuntu, the only extras you'll need are a few additional perl libra
 
 Each script and perl module has perldoc documentation that should be up-to-date
 and contain more information than this README.
+
+The default schema stores the header value in a `VARCHAR(750)`. This means that
+really long header values over this length will be truncated, something to
+bear in mind.
