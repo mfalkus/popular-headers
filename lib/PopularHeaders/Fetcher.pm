@@ -14,9 +14,9 @@ use Data::Dumper;
 sub new {
     my ($class) = @_;
     my $ua = Mojo::UserAgent->new;
-    $ua->connect_timeout(3);
-    $ua->inactivity_timeout(10);
-    $ua->request_timeout(3);
+    $ua->connect_timeout(15);
+    $ua->inactivity_timeout(15);
+    $ua->request_timeout(20);
     $ua->max_redirects(3);
 
     my $params = { ua => $ua };
