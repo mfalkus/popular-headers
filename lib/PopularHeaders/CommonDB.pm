@@ -78,6 +78,11 @@ sub add_header {
         $site, $source, $rank
     );
 
+    unless ($code) {
+        warn "WARN: $site has no code set, number of headers: "
+            . scalar keys %{$headers} . "\n";
+    }
+
     $self->{'insert_fetch_sth'}->execute(
         $site, $code
     );
