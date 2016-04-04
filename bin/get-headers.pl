@@ -29,6 +29,8 @@ GetOptions (
     "u|url=s"   => \$url,
 );
 
+$|=1;
+
 # Program can be run with just a single URL request in which case don't bother
 # to make a DB object etc
 if ($url) {
