@@ -19,10 +19,11 @@ mysql> GRANT ALL PRIVILEGES ON popular_headers.* TO 'ph_user'@'127.0.0.1';
 * Load the schema, `mysql -u ph_user -p popular_headers < sql/schema.sql`
 * Update the configuration file, `etc/config.yaml`, with your database credentials
 * Pipe a list of sites in to `bin/gather-headers`.
-
+<pre>
     wget http://s3.amazonaws.com/alexa-static/top-1m.csv.zip
     unzip top-1m.csv.zip
     cat top-1m.csv | head -n 10000 | bin/gather-headers
+</pre>
 
 * Query the DB for results.
 
