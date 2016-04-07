@@ -1,14 +1,20 @@
 This project aims to take in a list of website and see what HTTP headers those
 sites are returning, looking for what's popular.  Based on a project from
-Summer 2015, this repo represents the more interesting (and usable!) parts.
+Summer 2015, this repo represents the more interesting parts.
+
+Have a look at the `sql/schema.sql` to get an idea of how the data is stored
+once collected. If you're interested in Event Loops then [this post is worth a read]
+(https://falkus.co/2016/04/using-an-event-loop-for-multiple-http-requests/).
 
 # Running
 
 * Setup the database and user:
+<pre>
+mysql> CREATE DATABASE popular_headers;
+mysql> CREATE USER 'ph_user'@'127.0.0.1' IDENTIFIED BY 'your-secure-password';
+mysql> GRANT ALL PRIVILEGES ON popular_headers.* TO 'ph_user'@'127.0.0.1';
+</pre>
 
-    mysql> CREATE DATABASE popular_headers;
-    mysql> CREATE USER 'ph_user'@'127.0.0.1' IDENTIFIED BY 'your-secure-password';
-    mysql> GRANT ALL PRIVILEGES ON popular_headers.* TO 'ph_user'@'127.0.0.1';
 
 * Load the schema, `mysql -u ph_user -p popular_headers < sql/schema.sql`
 * Update the configuration file, `etc/config.yaml`, with your database credentials
